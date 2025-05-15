@@ -396,49 +396,34 @@ export default function SortingVisualizer() {
       <div className="border rounded-lg p-4 bg-background">
         <div className="flex items-end justify-center h-64 gap-1 relative">
           {array.map((value, index) => {
-            const isSwapping = swappingIndices.includes(index)
+            const height = (value / maxValue) * 100
             const isComparing = comparingIndices.includes(index)
+            const isSwapping = swappingIndices.includes(index)
 
             return (
               <div
-                key={index}
-                className={`w-full relative ${
-                  isComparing ? "bg-yellow-500" : isSwapping ? "bg-green-500" : "bg-primary"
-                }`}
-                style={{
-                  height: `${(value / maxValue) * 100}%`,
-                  maxWidth: `${Math.max(100 / array.length, 2)}%`,
-                  minWidth: "2px",
-                  transform: isSwapping
-                    ? `translateY(-15px) scale(1.1)`
-                    : isComparing
-                      ? `translateY(-5px) scale(1.05)`
-                      : "translateY(0) scale(1)",
-                  transition: "all 0.3s ease-in-out",
-                }}
-              >
-                {isSwapping && (
-                  <div className="absolute inset-0 animate-pulse bg-green-300 opacity-50 rounded-sm"></div>
-                )}
-                {array.length <= 20 && (
-                  <span className="absolute bottom-0 left-0 right-0 text-center text-xs text-white font-bold">
-                    {value}
-                  </span>
-                )}
-              </div>
+              key={index}
+              className={`mx-[1px] flex-1 transition-all duration-300 ${
+                isSwapping ? "bg-red-500" : isComparing ? "bg-yellow-400" : "bg-blue-500"
+              }`}
+              style={{
+                height: `${height}%`,
+                maxWidth: `${100 / array.length}%`,
+              }}
+            ></div>
             )
           })}
 
           {/* Render arrows between compared elements */}
           {comparingIndices.length === 2 && (
-            <ComparisonArrow
-              fromIndex={comparingIndices[0]}
-              toIndex={comparingIndices[1]}
-              arrayLength={array.length}
-              maxValue={maxValue}
-              array={array}
-            />
-          )}
+          <ComparisonArrow
+            fromIndex={comparingIndices[0]}
+            toIndex={comparingIndices[1]}
+            arrayLength={array.length}
+            maxValue={maxValue}
+            array={array}
+          />
+        )}
         </div>
       </div>
 
